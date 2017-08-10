@@ -5,11 +5,11 @@
 流式布局，在很多标签类的场景中可以用的；而网格布局在分类中以及自拍九宫格等场景很常见。如下所示：
 
 ![](https://camo.githubusercontent.com/3f50a7cf83e34a94cf22cc3a47c58c93ab2dc135/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f333938353536332d386337633534303166323630323731382e6a70673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
-如此使用频繁而又实现简单的控件，怎能不自己撸一个呢？控件，还是定制的好啊。
+如此使用频繁而又实现简单的控件，还是定制的好啊。
 
 ## 二、AutoFlowLayout实现效果
 
-先介绍下自己撸的这个控件的功能及效果。
+先介绍下这个控件的功能及效果。
 
 ### 1.功能
 
@@ -82,27 +82,96 @@ allprojects {
 
 ```ruby
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-    <com.example.library.AutoFlowLayout
-        android:id="@+id/afl_cotent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_normal_flow"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="普通的流式标签场景"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_special_flow"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="特殊的流式标签场景"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_normal_grid"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="普通的网格标签场景"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_special_grid"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="特殊的网格标签场景"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
 ```
 ### 代码设置数据
 
 ```ruby
-mFlowLayout.setAdapter(new FlowAdapter(Arrays.asList(mData)) {
-            @Override
-            public View getView(int position) {
-                View item = mLayoutInflater.inflate(R.layout.special_item, null);
-                TextView tvAttrTag = (TextView) item.findViewById(R.id.tv_attr_tag);
-                tvAttrTag.setText(mData[position]);
-                return item;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Button normalFlow = (Button) findViewById(R.id.tv_normal_flow);
+        Button specialFlow = (Button) findViewById(R.id.tv_special_flow);
+        Button normalGrid = (Button) findViewById(R.id.tv_normal_grid);
+        Button specialGrid = (Button) findViewById(R.id.tv_special_grid);
+        normalFlow.setOnClickListener(this);
+        specialFlow.setOnClickListener(this);
+        normalGrid.setOnClickListener(this);
+        specialGrid.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_normal_flow:{
+                Intent intent = new Intent(MainActivity.this, NormalFlowActivity.class);
+                startActivity(intent);
+                break;
             }
-        });
+            case R.id.tv_special_flow :{
+                Intent intent = new Intent(MainActivity.this, SpecialFlowActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.tv_normal_grid :{
+                Intent intent = new Intent(MainActivity.this, NormalGridActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.tv_special_grid :{
+                Intent intent = new Intent(MainActivity.this, SpecialGridActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
+    }
+}
  
 ```
 与ListView,GridView使用方式一样，实现FlowAdapter即可。
